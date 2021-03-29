@@ -45,7 +45,8 @@ public class SwiftDatadogFlutterPlugin: NSObject, FlutterPlugin {
       case "log":
         let logLevel = argsMap.value(forKey: "level") as! String
         let logMessage = argsMap.value(forKey: "message") as! String
-        let attributes = argsMap.value(forKey: "attributes") as? [String : Encodable]
+        let attributes = (argsMap.value(forKey: "attributes") as? [String : Any])?.mapValues { AnyEncodable($0) }
+        
         switch logLevel {
           case "debug":
             logger?.debug(logMessage, attributes: attributes)
